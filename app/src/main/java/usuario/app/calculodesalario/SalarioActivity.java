@@ -7,7 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TextView;
+
+import static android.support.v7.app.AlertDialog.*;
 
 public class SalarioActivity extends AppCompatActivity {
     RadioGroup percentageRadioGroup;
@@ -27,6 +28,31 @@ public class SalarioActivity extends AppCompatActivity {
     }
 
     public void calculateSalary(View view) {
+        double salary = Double.parseDouble(salaryEditText.getText().toString());
+        int id = percentageRadioGroup.getCheckedRadioButtonId();
+        double newSalary = 0;
 
+        switch (id) {
+            case R.id.fortyRadioButton:
+                newSalary = multiplySalary(0.4, salary);
+                break;
+            case R.id.fortyFiveRadioButton:
+                newSalary = multiplySalary(0.45, salary);
+                break;
+            case R.id.fiftyRadioButton:
+                newSalary = multiplySalary(0.5, salary);
+                break;
+        }
+        showSalaryDialog(newSalary);
     }
+
+    private void showSalaryDialog(double salary) {
+        Builder dialog = new Builder(SalarioActivity.this);
+        dialog.setTitle("Novo Salário!");
+        dialog.setMessage("Seu novo salário é: R$ " + salary);
+        dialog.setNeutralButton("OK", null);
+        dialog.show();
+    }
+
+    private double multiplySalary(double multiplier, double salary) { return salary + (salary * multiplier); }
 }
